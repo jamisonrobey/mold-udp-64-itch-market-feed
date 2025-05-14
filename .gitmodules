@@ -1,0 +1,3 @@
+[submodule "external/jam_utils"]
+	path = external/jam_utils
+	url = https://github.com/jamisonrobey/cpp-utils.git
