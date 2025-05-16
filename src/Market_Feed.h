@@ -10,8 +10,10 @@
 
 class Market_Feed {
 public:
-    Market_Feed(const std::string& multicast_group, uint16_t port, uint8_t ttl,
-                const std::string& path_to_itch_file, std::chrono::microseconds throttle_us);
+    Market_Feed(
+        const std::string& path_to_itch_file,
+        const std::string& multicast_group, uint16_t port, uint8_t ttl,
+        std::chrono::microseconds throttle_us);
 
     Market_Feed() = delete;
 

@@ -1,21 +1,19 @@
-# ITCH 5.0 TotalView feed over MoldUDP64
+# WIP
 
-- ITCH 5.0 TotalView feed by replaying historical ITCH data over MoldUDP64.
-- **Use-case**: provides a local testing environment for developing applications that consume exchange-like ITCH 5.0 data feeds over MoldUDP64
+# ITCH 5.0 simulation feed over MoldUDP64
+
+- Server for ITCH 5.0 feed replay from ITCH data over MoldUDP64.
 
 # Functionality
 
 - Reads raw ITCH 5.0 messages from a binary file.
 - Packs these ITCH messages into MoldUDP64 datagrams.
-- Multicast feed and retransmission feeds
+- Multicast feed
+- Retransmission feed (todo)
 
 # Using
-
 ## Build
-
-- Unix only
-- add steps for ubunutu / wsl
-
+- todo instructions
 ## Input File Format
 
 - This tool works **only** with historical ITCH binary files from [emi.nasdaq.com](https://emi.nasdaq.com/ITCH/Nasdaq%20ITCH/).
@@ -24,4 +22,9 @@
     - Length Prefix (2 bytes): Unsigned 16-bit integer, BIG-ENDIAN. Specifies the length (L) of the ITCH payload that follows.
     - ITCH Payload (L bytes): The actual ITCH 5.0 message.
     - `[uint16_t BE_LEN L][PAYLOAD[L]]`
+- Should work with any NASDAQ ITCH files but only tested with Nasdaq NSM
+## Monitoring
+- [This](https://github.com/Open-Markets-Initiative/wireshark-lua/tree/main/Nasdaq) repository provides wireshark dissectors for various ITCH protocols in wireshark and be used on this server for inspecting output.
+- Example screenshot of dissected output of the multicast market feed:
+![img.png](img.png)
  

@@ -17,7 +17,4 @@ namespace Mold_UDP_64
     };
 
 #pragma pack(pop)
-
-
-
 };

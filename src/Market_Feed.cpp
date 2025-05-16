@@ -9,12 +9,14 @@
 
 #include "Mold_UDP_64.h"
 
-Market_Feed::Market_Feed(const std::string& multicast_group, const uint16_t port, const uint8_t ttl,
-                         const std::string& path_to_itch_file,
-                         const std::chrono::microseconds throttle_us) : m_sock(socket(AF_INET, SOCK_DGRAM, 0)),
-                                                                        m_throttle_us(throttle_us),
-                                                                        m_itch_file(path_to_itch_file)
+Market_Feed::Market_Feed(
+    const std::string& path_to_itch_file,
+    const std::string& multicast_group, const uint16_t port, const uint8_t ttl,
+    const std::chrono::microseconds throttle_us) : m_sock(socket(AF_INET, SOCK_DGRAM, 0)),
+                                                   m_throttle_us(throttle_us),
+                                                   m_itch_file(path_to_itch_file)
 {
+    /* sockaddr config */
     m_multi_addr.sin_family = AF_INET;
 
     if (port < 1024)
@@ -43,6 +45,8 @@ Market_Feed::Market_Feed(const std::string& multicast_group, const uint16_t port
                                                 multicast_group));
     }
 
+    /* enable reuse_addr, and set ttl + loopback */
+
     auto opt = 1;
     if (setsockopt(m_sock.fd(), SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)) < 0)
     {
@@ -60,6 +64,8 @@ Market_Feed::Market_Feed(const std::string& multicast_group, const uint16_t port
     {
         throw std::system_error(errno, std::system_category(), "failed to disable multicast loopback");
     }
+
+    /* mmap itch file */
 
     struct stat sb{};
     if (fstat(m_itch_file.fd(), &sb) < 0)
@@ -138,6 +144,7 @@ void Market_Feed::start()
 
             file_pos += total_msg_size;
             header->msg_count++;
+            mold_seq_num++;
         }
 
         if (header->msg_count > 0)
